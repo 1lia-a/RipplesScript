@@ -1,0 +1,38 @@
+local Ripple = {}
+
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenServcice")
+local Players = game:GetService("Players")
+
+local Player = Players.LocalPlayer
+local Mouse = Player:GetMouse()
+local PlayerGui = Player:WaitForChild("PlayerGui")
+local FrameTemplate = script:WaitForChild("Frame")
+local PopUpGui = PlayerGui:WaitForChild("PopUp")
+
+local Time = .2
+
+local ValidInputTypes = {
+    [Enum.UserInputType.MouseButton1] = true,
+    [Enum.UserInputType.Touch] = true,
+}
+
+local ValidKeyCodes = {
+    [Enum.KeyCode.MouseButton1] = true
+}
+
+function _CreateFrame()
+    local Clone = FrameTemplate:Clone()
+end)
+
+UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+    if gameProcessedEvent then return end
+
+    if ValidInputTypes[input.UserInputType] or ValidKeyCodes[input.KeyCode] then
+        local FrameClone = _CreateFrame()
+        TweenService:Create(FrameClone, TweenInfo.new(Time), {
+            Size = UDim2.new(.058, 0, .1, 0),
+            Transparency = 1
+        }):Play()
+    end
+end)
