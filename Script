@@ -1,30 +1,37 @@
-local Ripple = {}
-
+-- Connect the services.
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenServcice")
 local Players = game:GetService("Players")
 
-local Player = Players.LocalPlayer
-local Mouse = Player:GetMouse()
-local PlayerGui = Player:WaitForChild("PlayerGui")
-local FrameTemplate = script:WaitForChild("Frame")
-local PopUpGui = PlayerGui:WaitForChild("PopUp")
+local Player = Players.LocalPlayer -- Get Local Player
+local Mouse = Player:GetMouse() -- Player Mouse.
+local PlayerGui = Player:WaitForChild("PlayerGui") -- Get PlayerGui
+local FrameTemplate = script:WaitForChild("Frame") -- FrameTemplate.
+local PopUpGui = PlayerGui:WaitForChild("PopUp") -- GUI.
 
-local Time = .2
+local Time = .2 -- Animation Time.
 
+-- Input events.
 local ValidInputTypes = {
     [Enum.UserInputType.MouseButton1] = true,
     [Enum.UserInputType.Touch] = true,
 }
 
+-- ValidKey for Consoles.
 local ValidKeyCodes = {
-    [Enum.KeyCode.MouseButton1] = true
+    [Enum.KeyCode.ButtonR2] = true
 }
 
+-- Create a frame Clone.
 function _CreateFrame()
     local Clone = FrameTemplate:Clone()
+    local Size = FrameTemplate.AbsoluteSize
+    Clone.Position = UDim2.new(0, Mouse.X, 0, Mouse.Y)
+    Clone.Parent = PopUpGui
+    return
 end)
 
+-- On Input event - Create Ripple.
 UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
     if gameProcessedEvent then return end
 
