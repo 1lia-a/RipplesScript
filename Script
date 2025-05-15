@@ -1,45 +1,43 @@
 -- Connect the services.
 local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenServcice")
+local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
+local Debris = game:GetService("Debris")
 
+-- Variables
 local Player = Players.LocalPlayer -- Get Local Player
 local Mouse = Player:GetMouse() -- Player Mouse.
 local PlayerGui = Player:WaitForChild("PlayerGui") -- Get PlayerGui
-local FrameTemplate = script:WaitForChild("Frame") -- FrameTemplate.
-local PopUpGui = PlayerGui:WaitForChild("PopUp") -- GUI.
+local RippleGUI = PlayerGui:WaitForChild("RippleGUI") -- GUI.
+local cirlceFrame = script:WaitForChild("Cirlce") -- Frame Template.
 
 local Time = .2 -- Animation Time.
 
 -- Input events.
 local ValidInputTypes = {
-    [Enum.UserInputType.MouseButton1] = true,
-    [Enum.UserInputType.Touch] = true,
-}
-
--- ValidKey for Consoles.
-local ValidKeyCodes = {
-    [Enum.KeyCode.ButtonR2] = true
+	[Enum.UserInputType.MouseButton1] = true,
+	[Enum.UserInputType.Touch] = true,
 }
 
 -- Create a frame Clone.
 function _CreateFrame()
-    local Clone = FrameTemplate:Clone()
-    local Size = FrameTemplate.AbsoluteSize
-    Clone.Position = UDim2.new(0, Mouse.X, 0, Mouse.Y)
-    Clone.Parent = PopUpGui
-    return
-end)
+	local Clone = cirlceFrame:Clone()
+	local Size = cirlceFrame.AbsoluteSize
+	Clone.Position = UDim2.new(0, Mouse.X, 0, Mouse.Y)
+	Clone.Parent = RippleGUI
+	Debris:AddItem(Clone, 1)
+	return Clone
+end
 
 -- On Input event - Create Ripple.
 UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-    if gameProcessedEvent then return end
+	if gameProcessedEvent then return end
 
-    if ValidInputTypes[input.UserInputType] or ValidKeyCodes[input.KeyCode] then
-        local FrameClone = _CreateFrame()
-        TweenService:Create(FrameClone, TweenInfo.new(Time), {
-            Size = UDim2.new(.058, 0, .1, 0),
-            Transparency = 1
-        }):Play()
-    end
+	if ValidInputTypes[input.UserInputType] then
+		local FrameClone = _CreateFrame()
+		TweenService:Create(FrameClone, TweenInfo.new(Time), {
+			Size = UDim2.new(.058, 0, .1, 0),
+			Transparency = 1
+		}):Play()
+	end
 end)
